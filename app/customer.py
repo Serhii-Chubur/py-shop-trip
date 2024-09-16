@@ -42,7 +42,7 @@ class Customer:
         for product_to_buy in self.product_cart:
             if product_to_buy in other.products:
                 product_price = float(other.products[product_to_buy]
-                                 * self.product_cart[product_to_buy])
+                                      * self.product_cart[product_to_buy])
 
                 if product_price.is_integer():
                     product_price = int(product_price)
