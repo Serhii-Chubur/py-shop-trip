@@ -9,30 +9,23 @@ def shop_trip() -> None:
     with open("app/config.json", "r") as file:
         config = json.load(file)
 
-    customers = []
-    shops = []
+        customers = [
+            Customer(
+                person["name"],
+                person["product_cart"],
+                person["location"],
+                person["money"],
+                Car(config["FUEL_PRICE"],
+                    person["car"]["brand"],
+                    person["car"]["fuel_consumption"])
+            )
+            for person in config["customers"]
+        ]
 
-    for person in config["customers"]:
-        car = Car(config["FUEL_PRICE"],
-                  person["car"]["brand"],
-                  person["car"]["fuel_consumption"]
-                  )
-
-        customer = Customer(person["name"],
-                            person["product_cart"],
-                            person["location"],
-                            person["money"],
-                            car
-                            )
-        customers.append(customer)
-
-    for place in config["shops"]:
-
-        shop = Shop(place["name"],
-                    place["location"],
-                    place["products"]
-                    )
-        shops.append(shop)
+    shops = [
+        Shop(place["name"], place["location"], place["products"])
+        for place in config["shops"]
+    ]
 
     for customer in customers:
 
@@ -62,13 +55,13 @@ def shop_trip() -> None:
             customer.location = shop.location
             customer.buying_products(visited_shop[0])
 
-            print(f"Total cost is {lowest_price} dollars")
-            print("See you again!\n")
+            print(f"Total cost is {lowest_price} dollars"
+                  "\nSee you again!\n")
 
             customer.location = home
 
-            print(f"{customer.name} rides home")
-            print(f"{customer.name} now has"
+            print(f"{customer.name} rides home\n"
+                  f"{customer.name} now has"
                   f"{customer.money - visited_shop[1]: .2f} dollars\n")
         else:
             print(f"{customer.name} doesn't have "

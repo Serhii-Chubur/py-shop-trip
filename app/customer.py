@@ -15,9 +15,9 @@ class Customer:
 
     def products_price(self, other: Shop) -> float | int:
         products_price = sum(
-            [self.product_cart[i] * other.products[i]
-             for i in self.product_cart
-             if i in other.products]
+            [self.product_cart[product] * other.products[product]
+             for product in self.product_cart
+             if product in other.products]
         )
         return products_price
 
